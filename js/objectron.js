@@ -102,6 +102,10 @@ function onResults(results) {
             });
             // Draw centroid.
             drawingUtils.drawLandmarks(canvasCtx, [landmarks[0]], { color: '#FFFFFF' });
+
+            //SET POS
+            SetShoePos(detectedObject.keypoints[0].point3d);
+            SetNumbersPos(detectedObject.keypoints);
         }
     }
     canvasCtx.restore();
@@ -114,7 +118,7 @@ new controls
     .ControlPanel(controlsElement, {
     selfieMode: false,
     modelName: 'Shoe',
-    maxNumObjects: 5,
+    maxNumObjects: 1,
     minDetectionConfidence: 0.5,
     minTrackingConfidence: 0.99,
 })
