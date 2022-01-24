@@ -81,7 +81,8 @@
       loader.load('models/shoe_vila.glb', function(gltf){
         shoe = gltf.scene.children[0];
         shoe.rotation.set(0,0,0);
-        //scene.add(gltf.scene);
+        shoe.scale.set(0.01,0.01,0.01);
+        scene.add(gltf.scene);
         animate();
       });
 
@@ -102,7 +103,7 @@
     }
 
     function SetShoePos(pos){
-      shoe.position.set(pos.x * 40, pos.y * 40, pos.z);
+      shoe.position.set(pos.x, pos.y, pos.z);
       //shoe.lookAt(0,0,0);
     }
     function SetNumbersPos(pos) {
