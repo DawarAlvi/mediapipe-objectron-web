@@ -28,6 +28,8 @@
     let shoe;
     let numbers = [];
 
+    const SHOW_OVERLAY = false;
+
     function init() {
 
       // SETUP
@@ -78,38 +80,57 @@
       
       let loader = new THREE.GLTFLoader();
 
+      //Load Shoe
       loader.load('models/shoe_vila.glb', function(gltf){
         shoe = gltf.scene.children[0];
-        shoe.rotation.set(0,0,0);
+        shoe.rotation.set(toRad(90),toRad(-90),0);
         shoe.scale.set(0.05,0.05,0.05);
         scene.add(gltf.scene);
         animate();
       });
 
+
       //Load number models
       for (let i = 0; i < 9; i++) {
-        loader.load('models/point.glb', function(gltf) {
+        loader.load('models/numbers/' + i + '.glb', function(gltf) {
           numbers.push(gltf.scene.children[0]);
-          numbers[i].scale.set(0.01 ,0.01 ,0.01);
-          scene.add(gltf.scene);
+          numbers[i].scale.set(0.1 ,0.1 ,0.1);
+          if(SHOW_OVERLAY) scene.add(gltf.scene);
           animate();
         });
       }
+      console.log(numbers);
     }
 
     function animate() {
       renderer.render(scene,camera);
       requestAnimationFrame(animate);
     }
+    function toRad(deg) {
+      return deg * (Math.PI / 180);
+    }
 
-    function SetShoePos(pos){
+    function SetShoePos(pos, cagePoints){
       shoe.position.set(pos.x, pos.y, pos.z);
-      //shoe.lookAt(0,0,0);
+      //front  face indices - 2468
+      //back   face indices - 1357
+      //top    face indices - 3478
+      //bottom face indices - 1256
+      avgPoint = getAveragePoint(cagePoints[3].point3d,cagePoints[4].point3d,cagePoints[7].point3d,cagePoints[8].point3d);
+      //shoe.lookAt(avgPoint.x,avgPoint.y,avgPoint.z);
     }
     function SetNumbersPos(pos) {
       let d = 1;
       for (let i = 0; i < 9; i++) {
         numbers[i].position.set(pos[i].point3d.x * d, pos[i].point3d.y * d, pos[i].point3d.z * d);
+      }
+    }
+
+    function getAveragePoint(p1,p2,p3,p4) {
+      return {
+        x : (p1.x + p2.x + p3.x + p4.x) / 4,
+        y : (p1.y + p2.y + p3.y + p4.y) / 4,
+        z : (p1.z + p2.z + p3.z + p4.z) / 4
       }
     }
 

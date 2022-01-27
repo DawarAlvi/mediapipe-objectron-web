@@ -93,9 +93,9 @@ function onResults(results) {
             // Reformat keypoint information as landmarks, for easy drawing.
             const landmarks = detectedObject.keypoints.map(x => x.point2d);
             // Draw bounding box.
-            drawingUtils.drawConnectors(canvasCtx, landmarks, mpObjectron.BOX_CONNECTIONS, { color: '#FF0000' });
+            if(SHOW_OVERLAY) drawingUtils.drawConnectors(canvasCtx, landmarks, mpObjectron.BOX_CONNECTIONS, { color: '#FF0000' });
             // Draw Axes
-            drawAxes(canvasCtx, landmarks, {
+            if(SHOW_OVERLAY) drawAxes(canvasCtx, landmarks, {
                 x: '#00FF00',
                 y: '#FF0000',
                 z: '#0000FF',
@@ -104,7 +104,7 @@ function onResults(results) {
             drawingUtils.drawLandmarks(canvasCtx, [landmarks[0]], { color: '#FFFFFF' });
 
             //SET POS
-            SetShoePos(detectedObject.keypoints[0].point3d);
+            SetShoePos(detectedObject.keypoints[0].point3d,detectedObject.keypoints);
             SetNumbersPos(detectedObject.keypoints);
         }
     }
