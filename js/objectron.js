@@ -104,9 +104,13 @@ function onResults(results) {
             drawingUtils.drawLandmarks(canvasCtx, [landmarks[0]], { color: '#FFFFFF' });
 
             //SET POS
+            scene.add(shoeScene);
             SetShoePos(detectedObject.keypoints[0].point3d,detectedObject.keypoints);
             SetNumbersPos(detectedObject.keypoints);
         }
+    }
+    else {
+      scene.remove(shoeScene);
     }
     canvasCtx.restore();
 }

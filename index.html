@@ -25,7 +25,7 @@
   <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <script>
     let scene, camera, renderer;
-    let shoe;
+    let shoeScene, shoe;
     let numbers = [];
 
     const SHOW_OVERLAY = false;
@@ -81,11 +81,12 @@
       let loader = new THREE.GLTFLoader();
 
       //Load Shoe
-      loader.load('models/shoe_vila.glb', function(gltf){
-        shoe = gltf.scene.children[0];
-        shoe.rotation.set(toRad(90),toRad(-90),0);
+      loader.load('models/reebokShoe.glb', function(gltf){
+        shoeScene = gltf.scene;
+        shoe = shoeScene.children[0];
+        shoe.rotation.set(toRad(90),toRad(90),0);
         shoe.scale.set(0.05,0.05,0.05);
-        scene.add(gltf.scene);
+        
         animate();
       });
 
@@ -99,7 +100,6 @@
           animate();
         });
       }
-      console.log(numbers);
     }
 
     function animate() {
@@ -111,6 +111,7 @@
     }
 
     function SetShoePos(pos, cagePoints){
+      
       shoe.position.set(pos.x, pos.y, pos.z);
       //front  face indices - 2468
       //back   face indices - 1357
@@ -118,6 +119,7 @@
       //bottom face indices - 1256
       avgPoint = getAveragePoint(cagePoints[3].point3d,cagePoints[4].point3d,cagePoints[7].point3d,cagePoints[8].point3d);
       //shoe.lookAt(avgPoint.x,avgPoint.y,avgPoint.z);
+
     }
     function SetNumbersPos(pos) {
       let d = 1;
@@ -149,22 +151,6 @@
           <div class="spinner"></div>
           <div class="message">Loading</div>
         </div>
-    
-        <a class="abs logo" href="http://www.mediapipe.dev" target="_blank">
-          <div style="display: flex;align-items: center;bottom: 0;right: 10px;">
-            <!-- <img class="logo" src="logo_white.png" alt="" style="height: 50px;"> -->
-            <span class="title">MediaPipe</span>
-          </div>
-        </a>
-    
-        <div class="shoutout">
-          <div>
-            <a href="https://solutions.mediapipe.dev/objectron">
-              Click here for more info
-            </a>
-          </div>
-        </div>
-    
     </div>
     
     <div class="control-panel"></div>
