@@ -30,8 +30,8 @@ function testSupport(supportedDevices) {
         break;
     }
     if (!isSupported) {
-        alert(`This demo, running on ${detectedDevice.client.name}/${detectedDevice.os.name}, ` +
-            `is not well supported at this time, continue at your own risk.`);
+        //alert(`This demo, running on ${detectedDevice.client.name}/${detectedDevice.os.name}, ` + `is not well supported at this time, continue at your own risk.`);
+        console.log(`This demo, running on ${detectedDevice.client.name}/${detectedDevice.os.name}, ` + `is not well supported at this time.`);
     }
     else {
         console.log(`Device Supported ${detectedDevice.client.name}/${detectedDevice.os.name}`);
@@ -84,7 +84,7 @@ function onResults(results) {
     // Hide the spinner.
     document.body.classList.add('loaded');
     // Update the frame rate.
-    fpsControl.tick();
+    //fpsControl.tick();
     // Draw the overlays.
     canvasCtx.save();
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
@@ -127,8 +127,8 @@ new controls
     minTrackingConfidence: 0.99,
 })
     .add([
-    new controls.StaticText({ title: 'MediaPipe Objectron' }),
-    fpsControl,
+    //new controls.StaticText({ title: 'MediaPipe Objectron' }),
+    //fpsControl,
     new controls.SourcePicker({
         onSourceChanged: (name, type) => {
             objectron.setOptions({ staticImageMode: type !== 'image' });
@@ -151,53 +151,63 @@ new controls
         },
         examples,
     }),
-    new controls.Toggle({ title: 'Selfie Mode', field: 'selfieMode' }),
-    new controls.DropDownControl({
-        title: 'Model',
-        field: 'modelName',
-        options: [
-            {
-                name: 'Shoe',
-                value: 'Shoe',
-            },
-            {
-                name: 'Camera',
-                value: 'Camera',
-            },
-            {
-                name: 'Chair',
-                value: 'Chair',
-            },
-            {
-                name: 'Cup',
-                value: 'Cup',
-            },
-        ]
-    }),
-    new controls.Slider({
-        title: 'Max Num Objects',
-        field: 'maxNumObjects',
-        range: [1, 10],
-        step: 1,
-    }),
-    new controls.Slider({
-        title: 'Min Detection Confidence',
-        field: 'minDetectionConfidence',
-        range: [0, 1],
-        step: 0.01
-    }),
-    new controls.Slider({
-        title: 'Min Tracking Confidence',
-        field: 'minTrackingConfidence',
-        range: [0, 1],
-        step: 0.01
-    }),
+    //new controls.Toggle({ title: 'Selfie Mode', field: 'selfieMode' }),
+    // new controls.DropDownControl({
+    //     title: 'Model',
+    //     field: 'modelName',
+    //     options: [
+    //         {
+    //             name: 'Shoe',
+    //             value: 'Shoe',
+    //         },
+    //         {
+    //             name: 'Camera',
+    //             value: 'Camera',
+    //         },
+    //         {
+    //             name: 'Chair',
+    //             value: 'Chair',
+    //         },
+    //         {
+    //             name: 'Cup',
+    //             value: 'Cup',
+    //         },
+    //     ]
+    // }),
+    // new controls.Slider({
+    //     title: 'Max Num Objects',
+    //     field: 'maxNumObjects',
+    //     range: [1, 10],
+    //     step: 1,
+    // }),
+    // new controls.Slider({
+    //     title: 'Min Detection Confidence',
+    //     field: 'minDetectionConfidence',
+    //     range: [0, 1],
+    //     step: 0.01
+    // }),
+    // new controls.Slider({
+    //     title: 'Min Tracking Confidence',
+    //     field: 'minTrackingConfidence',
+    //     range: [0, 1],
+    //     step: 0.01
+    // }),
 ])
     .on(x => {
     const options = x;
     videoElement.classList.toggle('selfie', options.selfieMode);
     objectron.setOptions(options);
 });
+
+
+/// ADD CLOSE BUTTON
+const closeBtn = document.createElement("button");
+closeBtn.innerText = "x";
+document.getElementsByClassName("control-panel-source-picker")[0].appendChild(closeBtn);
+closeBtn.addEventListener("click", ()=>{document.getElementsByClassName("control-panel")[0].style.display = "none";});
+///
+
+
 function drawAxes(canvasCtx, landmarks, color) {
     const { BACK_BOTTOM_RIGHT, BACK_TOP_LEFT, BACK_TOP_RIGHT, FRONT_BOTTOM_LEFT, FRONT_BOTTOM_RIGHT, FRONT_TOP_RIGHT, FRONT_TOP_LEFT, CENTER } = mpObjectron.BOX_KEYPOINTS;
     const xMidPoint = lineIntersection([landmarks[BACK_BOTTOM_RIGHT], landmarks[FRONT_TOP_RIGHT]], [landmarks[BACK_TOP_RIGHT], landmarks[FRONT_BOTTOM_RIGHT]]);
